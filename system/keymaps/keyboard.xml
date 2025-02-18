@@ -98,17 +98,17 @@
       <power>ActivateWindow(ShutdownMenu)</power>
       <sleep>ActivateWindow(ShutdownMenu)</sleep>
       <!-- PVR windows -->
-      <e>ActivateWindow(TVGuide)</e>
+      <!-- <e>ActivateWindow(TVGuide)</e>
       <epg>ActivateWindow(TVGuide)</epg>
       <h>ActivateWindow(TVChannels)</h>
       <j>ActivateWindow(RadioChannels)</j>
       <k>ActivateWindow(TVRecordings)</k>
-      <b>ActivateWindow(TVTimers)</b>
+      <b>ActivateWindow(TVTimers)</b> -->
       <!-- PVR -->
-      <red>ActivateWindow(TVChannels)</red>
+      <!-- <red>ActivateWindow(TVChannels)</red>
       <green>ActivateWindow(Videos)</green>
       <yellow>ActivateWindow(Music)</yellow>
-      <blue>ActivateWindow(Pictures)</blue>
+      <blue>ActivateWindow(Pictures)</blue> -->
       <!-- Multimedia keyboard keys -->
       <browser_back>Back</browser_back>
       <browser_forward/>
@@ -153,15 +153,15 @@
       <f10>VolumeUp</f10>                 <!-- MCE Vol up -->
       <f9>VolumeDown</f9>                 <!-- MCE Vol down -->
       <f8>Mute</f8>                       <!-- MCE mute -->
-      <g mod="ctrl">ActivateWindow(TVGuide)</g>  <!-- MCE Guide -->
+      <!-- <g mod="ctrl">ActivateWindow(TVGuide)</g>  MCE Guide -->
       <m mod="ctrl">ActivateWindow(music)</m>    <!-- MCE My music -->
       <i mod="ctrl">ActivateWindow(pictures)</i> <!-- MCE My pictures -->
       <e mod="ctrl">ActivateWindow(videos)</e>    <!-- MCE videos -->
       <m mod="ctrl,shift">PlayerControl(ShowVideoMenu)</m>         <!-- MCE DVD menu -->
-      <o mod="ctrl">ActivateWindow(TVRecordings)</o>  <!-- MCE Recorded TV -->
-      <t mod="ctrl">ActivateWindow(TVChannels)</t>  <!-- MCE Live TV  -->
-      <t mod="ctrl,shift">ActivateWindow(TVChannels)</t>  <!-- MCE TV -->
-      <a mod="ctrl">ActivateWindow(RadioChannels)</a>  <!-- MCE Radio -->
+      <!-- <o mod="ctrl">ActivateWindow(TVRecordings)</o>  MCE Recorded TV
+      <t mod="ctrl">ActivateWindow(TVChannels)</t>  MCE Live TV 
+      <t mod="ctrl,shift">ActivateWindow(TVChannels)</t>  MCE TV
+      <a mod="ctrl">ActivateWindow(RadioChannels)</a>  MCE Radio -->
       <!-- MCE keypresses without an obvious use in Kodi -->
       <u mod="ctrl">Notification(MCEKeypress, DVD subtitle, 3)</u>
       <a mod="ctrl,shift">Notification(MCEKeypress, DVD audio, 3)</a>

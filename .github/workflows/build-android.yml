@@ -1,0 +1,79 @@
+name: build-android
+on:
+    workflow_dispatch:
+jobs:
+    build:
+        runs-on: ubuntu-20.04
+        steps:
+            - name: Update and upgrade apt-get
+              run: sudo apt-get update && sudo apt-get upgrade -y
+
+            - name: Install build dependencies needed to cross-compile Kodi for Android
+              run: sudo apt install autoconf bison build-essential curl flex gawk git gperf lib32stdc++6 lib32z1 lib32z1-dev libcurl4-openssl-dev unzip zip zlib1g-dev
+            - name: Checkout
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+            - name: Set up JDK 17
+              uses: actions/setup-java@v2
+              with:
+                  distribution: 'adopt'
+                  java-version: '17'
+            - name: Set up Android SDK
+              uses: android/setup-android@v2
+              with:
+                  sdk-platform-tools: '31.0.2'
+                  sdk-build-tools: '31.0.0'
+                  sdk-platform: 'android-31'
+                  path: ${{ github.workspace }}/android-sdk
+            - name: Accept Android SDK licenses
+              run: cd android-sdk/cmdline-tools/bin &&
+                     yes | ./sdkmanager --licenses &&
+                     ./sdkmanager "platform-tools" "platforms;android-31" "build-tools;31.0.0"
+            - name: Set up NDK
+              uses: android/ndk-setup@v2
+              with:
+                  ndk-version: '27.2.12479018'
+            - name: Set up CMake
+              uses: android/cmake-setup@v2
+              with:
+                  cmake-version: '3.10.2.4988404'
+            - name: Create a key to sign the APK
+              run: keytool -genkey -keystore ~/.android/debug.keystore -v -alias androiddebugkey -dname "CN=Android Debug,O=Android,C=US" -keypass android -storepass android -keyalg RSA -keysize 2048 -validity 10000
+            - name: Build Kodi for Android
+              run: ./configure --with-tarballs=$HOME/android-tools/xbmc-tarballs --host=arm-linux-androideabi --with-sdk-path=$HOME/android-tools/android-sdk-linux --prefix=$HOME/android-tools/xbmc-depends && make -j$(nproc)
+            - name: upload artifact
+              uses: actions/upload-artifact@v2
+              with:
+                  name: kodi-android
+    release:
+        needs: build
+        runs-on: ubuntu-20.04
+        steps:
+            - name: Download artifact
+              uses: actions/download-artifact@v2
+              with:
+                 name: kodi-android
+            - name: Create GitHub Release
+              id: create_release
+              uses: actions/create-release@v1
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              with:
+                tag_name: v1.0.0
+                release_name: Release v1.0.0
+                body: |
+                  Release notes for v1.0.0
+                draft: false
+                prerelease: false
+
+            - name: Upload Release Asset
+              uses: actions/upload-release-asset@v1
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              with:
+                upload_url: ${{ steps.create_release.outputs.upload_url }}
+                asset_path: build/
+                asset_name: build-artifacts.zip
+                asset_content_type: application/zip
+        
